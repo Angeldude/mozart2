@@ -15,7 +15,7 @@ Binary packages for Linux, Mac OS and Windows are built from time to time and
 made available on
 [SourceForge](http://sourceforge.net/projects/mozart-oz/files/).
 
-Mac support is provided for 10.8.x and recent versions (2.x) of Aquamacs. 
+Mac support is provided for 10.8.x and recent versions (2.x) of Aquamacs.
 
 The binary distribution requires that you have installed Tcl/Tk 8.5 on your
 system.
@@ -39,6 +39,11 @@ In order to build Mozart 2, you need the following tools on your computer:
 *   Boost >= 1.53.0 (with development files)
 *   Tcl/Tk 8.5 or 8.6 (with development files)
 *   emacs
+
+For building CLANG/LLVM:
+*   LibXML2-dev (tested with version 2.9.3)
+*   OCaml-findlib
+*   libCTypes-OCaml-dev (>= 0.4 - available in Debian Unstable as of Jan. 2016)
 
 On Linux, use your favorite package manager to grab these tools. Refer to the
 specialized Readmes for recommendations on Mac OS and Windows.
@@ -72,12 +77,11 @@ build prior to building Mozart 2.
 this section, and let the automatic build process fetch them and build them for
 you. Use this "feature" at your own risk, because none of us tests this
 anymore, and we may decide to remove support for it at some point.
-
-First download all the sources. Both projects use Subversion.
+First download all the sources. GTest uses Git, whereas LLVM uses Subversion.
 
 ```
 projects$ cd externals
-externals$ svn co http://googletest.googlecode.com/svn/trunk gtest
+externals$ git clone https://github.com/google/googletest.git gtest
 [...]
 externals$ svn co http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_34/final llvm
 [...]
@@ -180,6 +184,11 @@ lists the options you need.
       <td>If not present, LLVM will be downloaded and built automatically</td>
     </tr>
     <tr>
+      <td>CLANG_SRC_DIR</td>
+      <td>Paths to the source directory of CLANG</td>
+      <td>Use this if cmake cannot find the CLANG sources</td>
+    </tr>
+    <tr>
       <td>EMACS</td>
       <td>Path to the Emacs executable</td>
       <td>Required on Windows (on Unix it can be found automatically, in principle)</td>
@@ -192,7 +201,7 @@ lists the options you need.
   </tbody>
 </table>
 
-To effectively build Mozart, use `make`.
+To actually build Mozart, use `make`.
 
 The same recommandation about using `-jN` holds. Building Mozart 2 is _very_
 long (especially when done from scratch). But beware, each task can be very
